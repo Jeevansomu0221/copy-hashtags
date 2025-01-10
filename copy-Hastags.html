@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hashtag Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #6200ea;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .hashtags {
+            list-style: none;
+            padding: 0;
+        }
+
+        .hashtags li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .hashtags li button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #6200ea;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .hashtags li button:hover {
+            background-color: #3700b3;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Hashtag Finder</h1>
+    </header>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for hashtags...">
+        </div>
+        <ul id="hashtagList" class="hashtags"></ul>
+        <p id="noResults" class="no-results" style="display: none;">No hashtags found.</p>
+    </div>
+
+    <script>
+        const hashtags = [
+            "#travel", "#food", "#fitness", "#technology", "#photography", "#art", "#love", "#nature",
+            "#fashion", "#music", "#fun", "#life", "#inspiration", "#motivation", "#health", "#education"
+        ];
+
+        const searchInput = document.getElementById('searchInput');
+        const hashtagList = document.getElementById('hashtagList');
+        const noResults = document.getElementById('noResults');
+
+        function displayHashtags(filteredHashtags) {
+            hashtagList.innerHTML = '';
+            if (filteredHashtags.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            }
+            noResults.style.display = 'none';
+            filteredHashtags.forEach(hashtag => {
+                const li = document.createElement('li');
+                li.innerHTML = `${hashtag} <button onclick="copyToClipboard('${hashtag}')">Copy</button>`;
+                hashtagList.appendChild(li);
+            });
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert(`Copied: ${text}`);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            const filteredHashtags = hashtags.filter(hashtag => hashtag.toLowerCase().includes(query));
+            displayHashtags(filteredHashtags);
+        });
+
+        // Display all hashtags initially
+        displayHashtags(hashtags);
+    </script>
+</body>
+</html>
